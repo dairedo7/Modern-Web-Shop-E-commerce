@@ -14,6 +14,8 @@ const AddressForm = () => {
   const [shippingOptions, setShippingOptions] = useState([]);
   const [shippingOption, setShippingOption] = useState('');
 
+  const methods = useForm();
+
   return (
     <>
       <Typography variant="h6" gutterBottom>

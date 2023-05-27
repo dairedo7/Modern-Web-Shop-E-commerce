@@ -12,9 +12,9 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
 
   const EmptyCart = () => (
     <Typography variant="subtitle1">
-      You need to add at least one item to your shopping cart -{' '}
+      You need to add at least one item to your shopping cart -
       <Link className={classes.link} to="/">
-        start here
+        &nbsp;start here
       </Link>
     </Typography>
   );
@@ -22,13 +22,13 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
   const FilledCart = () => (
     <>
       <Grid type="container" spacing={3}>
-        {card.line_items.map((item) => (
-          <Grid item xs={12} sm={4} key={item.id}>
+        {cart.line_items.map((item, i, arr) => (
+          <Grid item xs={12} sm={6} key={item.id} className={i !== cart.line_items.length - 1 ? classes.items : ''}>
             <CartItem item={item} handleUpdateQuantity={handleUpdateQuantity} handleRemoveFromCart={handleRemoveFromCart} />
           </Grid>
         ))}
         <div className={classes.cardDetails}>
-          <Typography variant="h4">Subtotal: {card.subtotal.formatted_with_symbol}</Typography>
+          <Typography variant="h4">Subtotal: {cart.subtotal.formatted_with_symbol}</Typography>
           <div>
             <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={handleEmptyCart}>
               Empty Card
@@ -42,7 +42,7 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
     </>
   );
 
-  if (!isEmpty) return 'Loading...';
+  // if (isEmpty) return 'Loading...';
 
   return (
     <Container>

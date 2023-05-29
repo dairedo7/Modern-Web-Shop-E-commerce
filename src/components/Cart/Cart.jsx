@@ -6,9 +6,11 @@ import CartItem from './CartItem/CartItem';
 import useStyles from './styles';
 
 function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantity }) {
-  const isEmpty = !cart.line_items.length;
+  // const isEmpty = !cart.line_items;
 
   const classes = useStyles();
+
+  const onEmptyCart = () => handleEmptyCart();
 
   const EmptyCart = () => (
     <Typography variant="subtitle1">
@@ -21,7 +23,7 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
 
   const FilledCart = () => (
     <>
-      <Grid type="container" spacing={3}>
+      <Grid container spacing={3}>
         {cart.line_items.map((item, i, arr) => (
           <Grid item xs={12} sm={6} key={item.id} className={i !== cart.line_items.length - 1 ? classes.items : ''}>
             <CartItem item={item} handleUpdateQuantity={handleUpdateQuantity} handleRemoveFromCart={handleRemoveFromCart} />
@@ -30,7 +32,7 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
         <div className={classes.cardDetails}>
           <Typography variant="h4">Subtotal: {cart.subtotal.formatted_with_symbol}</Typography>
           <div>
-            <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={handleEmptyCart}>
+            <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={onEmptyCart}>
               Empty Card
             </Button>
             <Button component={Link} to="/checkout" className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary">
@@ -42,7 +44,7 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
     </>
   );
 
-  // if (isEmpty) return 'Loading...';
+  if (!cart.line_items) return 'Loading...';
 
   return (
     <Container>
@@ -50,7 +52,7 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
       <Typography className={classes.title} variant="h3" gutterBottom>
         Your shopping cart
       </Typography>
-      {isEmpty ? <EmptyCart /> : <FilledCart />}
+      {!cart.line_items.length ? EmptyCart() : FilledCart()}
     </Container>
   );
 }

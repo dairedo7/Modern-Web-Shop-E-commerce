@@ -6,26 +6,39 @@ import Review from './Review';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
-const PaymentForm = ({ checkoutToken, shippingData, backStep, handleCaptureCheckout, nextStep, timeout }) => {
+const PaymentForm = ({ checkoutToken, shippingData, backStep, handleCaptureCheckout, nextStep }) => {
+  console.log(checkoutToken);
+  console.log(shippingData);
+  console.log(shippingData.address1);
   const handleSubmit = async (event, elements, stripe) => {
     event.preventDefault();
 
     if (!stripe || !elements) return;
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card: CardElement });
+    const cardElement = elements.getElement(CardElement);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({ type: 'card', card: cardElement });
 
     if (error) {
       console.log(error);
     } else {
       const orderData = {
-        line_items: checkoutToken.live.line_items,
-        customer: { firstname: shippingData.firstName, lastname: shippingData.lastName },
+        line_items: checkoutToken.line_items,
+        customer: { firstname: shippingData.firstName, lastname: shippingData.lastName, email: shippingData.email },
         shipping: {
-          name: 'Primary',
+          name: 'International',
           street: shippingData.address1,
           town_city: shippingData.city,
           county_state: shippingData.shippingSubdivision,
           postal_zip_code: shippingData.zip,
+          country: shippingData.shippingCountry,
+        },
+        billing: {
+          name: shippingData.firstName,
+          street: shippingData.address1,
+          town_city: shippingData.city,
+          postal_zip_code: shippingData.zip,
+          county_state: shippingData.shippingSubdivision,
           country: shippingData.shippingCountry,
         },
         fulfillment: { shipping_method: shippingData.shippingOption },
@@ -37,7 +50,6 @@ const PaymentForm = ({ checkoutToken, shippingData, backStep, handleCaptureCheck
         },
       };
       handleCaptureCheckout(checkoutToken.id, orderData);
-      timeout();
 
       nextStep();
     }
@@ -60,7 +72,7 @@ const PaymentForm = ({ checkoutToken, shippingData, backStep, handleCaptureCheck
                   Back
                 </Button>
                 <Button type="submit" variant="contained" disabled={!stripe} color="primary">
-                  Pay {checkoutToken.live.subtotal.formatted_with_symbol}
+                  Pay {checkoutToken.subtotal.formatted_with_symbol}
                 </Button>
               </div>
             </form>

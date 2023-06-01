@@ -10,7 +10,7 @@ function Product({ product, onAddToCart }) {
   return (
     <Card className={classes.root}>
       <CardMedia className={classes.media} image={product.image.url} title={product.name} />
-      <CardContent>
+      <CardContent className={classes.content}>
         <div className={classes.cardContent}>
           <Typography variant="h5" gutterBottom>
             {product.name}
@@ -19,7 +19,7 @@ function Product({ product, onAddToCart }) {
             {product.price.formatted_with_symbol}
           </Typography>
         </div>
-        <Typography dangerouslySetInnerHTML={{ __html: product.description }} variant="body2" color="textSecondary" />
+        <Typography className={{ flexGrow: 1 }} dangerouslySetInnerHTML={{ __html: product.description }} variant="body2" color="textSecondary" />
         <CardActions className={classes.cardActions} disableSpacing>
           <IconButton aria-label="Add to Cart" onClick={() => onAddToCart(product.id, 1)}>
             <AddShoppingCart />

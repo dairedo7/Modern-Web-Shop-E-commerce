@@ -10,4 +10,7 @@ export default makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
   },
+  stack: {
+    marginTop: '2rem',
+  },
 }));

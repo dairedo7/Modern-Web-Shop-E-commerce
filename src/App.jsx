@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { commerce } from './lib/commerce';
-import { Cart, Products, Navbar, Checkout } from './components';
+import { Cart, Navbar, Checkout } from './components';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Loader from './components/Loader/Loader';
+
+const Products = React.lazy(() => import('./components/Products/Products'));
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -23,7 +26,7 @@ const App = () => {
 
   const handleAddToCart = async (productId, quantity) => {
     const cart = await commerce.cart.add(productId, quantity);
-    console.log(cart);
+
     setCart(cart);
   };
 
@@ -67,21 +70,27 @@ const App = () => {
     fetchCart();
   }, []);
 
-  if (!products || !cart) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Router>
       <Navbar totalItems={cart.total_items} />
       <Routes>
-        <Route exact path="/" element={<Products products={products} onAddToCart={handleAddToCart} />} />
+        <Route
+          exact
+          path="/"
+          element={
+            <Suspense fallback={<Loader />}>
+              <Products products={products} onAddToCart={handleAddToCart} />{' '}
+            </Suspense>
+          }
+        />
 
         <Route
           exact
           path="/cart"
           element={
-            <Cart cart={cart} handleUpdateQuantity={handleUpdateQuantity} handleRemoveFromCart={handleRemoveFromCart} handleEmptyCart={handleEmptyCart} />
+            <Suspense fallback={<Loader />}>
+              <Cart cart={cart} handleUpdateQuantity={handleUpdateQuantity} handleRemoveFromCart={handleRemoveFromCart} handleEmptyCart={handleEmptyCart} />
+            </Suspense>
           }
         />
         <Route

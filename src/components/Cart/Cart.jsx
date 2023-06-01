@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 
 import CartItem from './CartItem/CartItem';
 import useStyles from './styles';
+import Loader from '../Loader/Loader';
 
 function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantity }) {
-  // const isEmpty = !cart.line_items;
+  const isEmpty = !cart.line_items;
 
   const classes = useStyles();
 
@@ -23,15 +24,17 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
 
   const FilledCart = () => (
     <>
-      <Grid container spacing={3}>
-        {cart.line_items.map((item, i, arr) => (
-          <Grid item xs={12} sm={6} key={item.id} className={i !== cart.line_items.length - 1 ? classes.items : ''}>
+      <Grid container spacing={3} className={classes.cart}>
+        {cart.line_items.map((item) => (
+          <Grid item xs={12} sm={6} md={4} key={item.id}>
             <CartItem item={item} handleUpdateQuantity={handleUpdateQuantity} handleRemoveFromCart={handleRemoveFromCart} />
           </Grid>
         ))}
         <div className={classes.cardDetails}>
-          <Typography variant="h4">Subtotal: {cart.subtotal.formatted_with_symbol}</Typography>
-          <div>
+          <Typography className={classes.cartTotal} variant="h4">
+            Subtotal: {cart.subtotal.formatted_with_symbol}
+          </Typography>
+          <div className={classes.buttons}>
             <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={onEmptyCart}>
               Empty Card
             </Button>
@@ -44,7 +47,7 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
     </>
   );
 
-  if (!cart.line_items) return 'Loading...';
+  if (isEmpty) return <Loader />;
 
   return (
     <Container>
@@ -52,7 +55,7 @@ function Cart({ cart, handleEmptyCart, handleRemoveFromCart, handleUpdateQuantit
       <Typography className={classes.title} variant="h3" gutterBottom>
         Your shopping cart
       </Typography>
-      {!cart.line_items.length ? EmptyCart() : FilledCart()}
+      {isEmpty.length ? EmptyCart() : FilledCart()}
     </Container>
   );
 }

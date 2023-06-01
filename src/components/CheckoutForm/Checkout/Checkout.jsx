@@ -13,7 +13,6 @@ const Checkout = ({ cart, handleCaptureCheckout, order, errorMessage }) => {
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
   const [shippingData, setShippingData] = useState({});
-  // const [isFinished, setIsFinished] = useState(false);
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -42,14 +41,6 @@ const Checkout = ({ cart, handleCaptureCheckout, order, errorMessage }) => {
     }
   }, [cart]);
 
-  // const timeout = () => {
-  //   setTimeout(() => {
-  //     if (isFinished) {
-  //       setIsFinished(true);
-  //     }
-  //   }, 3000);
-  // };
-
   let Confirmation = () =>
     order.customer ? (
       <>
@@ -66,18 +57,6 @@ const Checkout = ({ cart, handleCaptureCheckout, order, errorMessage }) => {
         </Button>
       </>
     ) : (
-      // : isFinished ? (
-      // <>
-      //   <div>
-      //     <Typography variant="h5">Thank you for your purchase!</Typography>
-      //     <Divider className={classes.divider} />
-      //   </div>
-      //   <br />
-      //   <Button component={Link} variant="outlined" type="button" to="/">
-      //     Back to home
-      //   </Button>
-      // </>
-      // )
       <div className={classes.spinner}>
         <CircularProgress />
       </div>
@@ -94,8 +73,6 @@ const Checkout = ({ cart, handleCaptureCheckout, order, errorMessage }) => {
       </>
     );
   }
-
-  console.log(shippingData);
 
   const Form = () =>
     activeStep === 0 ? (

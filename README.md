@@ -1,4 +1,4 @@
-The cutting-edge web shop project presents a remarkable e-commerce platform built with React, Commerce.js backend API, and Stripe payment gateway integration. This web-shop provides a sleek, intuitive, and secure online shopping experience.
+This web shop project presents e-commerce platform built with React, Commerce.js backend API, and Stripe payment gateway integration. This web-shop provides a sleek, intuitive, and secure online shopping experience.
 
 Utilizing the power of React, I have crafted a responsive and dynamic user interface that provides seamless navigation and a delightful shopping journey. Material-UI icons, core components, and styled components such as InputLabel, Select, Button, Grid, MenuItem, Typography, Divider, and Grid ensures consistent, nice design across the entire platform.
 
